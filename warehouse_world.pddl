@@ -35,11 +35,13 @@
       :parameters (?rob - robot ?a - location ?b - location)
       :precondition (and 
                       (at ?rob ?a) 
+                      (no-robot ?b)
                       (connected ?a ?b)
                     )
       :effect (and 
                   (no-robot ?a)
                   (not (no-robot ?b)) 
+                  (not (at ?rob ?a))
                   (at ?rob ?b) 
               )
    )
@@ -49,8 +51,9 @@
       					(at ?p ?l) 
       					(orders ?o ?item)
       					(contains ?p ?item) 
-      					
-      					
+      					(packing-at ?s ?l) 
+      					(not (complete ?s))
+      					(ships ?s ?o) 
   					)
       :effect (and 
                 (includes ?s ?item) 
@@ -65,6 +68,13 @@
                   (at ?rob ?b) 
                   (at ?p ?b) 
 
+                  (no-robot ?a) 
+                  (not (no-robot ?b))
+
+                   
+                  (not (at ?rob ?a))
+                  (not (at ?p ?a)) 
+
                   (no-pallette ?a) 
                   (not (no-pallette ?b))
                    
@@ -77,6 +87,7 @@
       :precondition (and (started ?s) (ships ?s ?o) (packing-at ?s ?l)(not (complete ?s)))
       :effect (and 
                   (complete ?s) 
+                  (available ?l)
               )
    )
 
